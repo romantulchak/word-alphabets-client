@@ -1,0 +1,67 @@
+$uploadFileButtonBg: rgb(105 240 174 / 11%);
+
+%uploadButtonStyle {
+  background: none;
+  display: flex;
+  cursor: pointer;
+  width: 100%;
+  height: 300px;
+  align-items: center;
+  transition: 0.3s all;
+  text-align: center;
+  justify-content: center;
+  font-size: 26px;
+  border-radius: 4px;
+
+  mat-icon {
+    transform: rotate(90deg);
+  }
+}
+
+::ng-deep {
+  .mat-radio-outer-circle {
+    border-color: #686868;
+  }
+}
+
+.alphabet__from_file {
+  display: flex;
+  justify-content: center;
+  margin-top: 5em;
+  width: 100%;
+
+  .hide__file_input {
+    display: none;
+  }
+
+  .upload__btn {
+    border: 1px dashed rgba(0, 0, 0, 0.5);
+    @extend %uploadButtonStyle;
+
+    &:hover {
+      background: $uploadFileButtonBg;
+    }
+  }
+
+  .file__selected{
+    @extend %uploadButtonStyle;
+    border: 1px solid rgb(105 240 174 / 25%);
+    background: $uploadFileButtonBg;
+  }
+}
+
+.options {
+  text-align: center;
+  padding: 1em;
+
+  .radio__btn_block {
+    display: flex;
+    justify-content: center;
+
+    .option__btn {
+      font-size: 17px;
+      letter-spacing: 1px;
+      margin: 0 1em;
+    }
+  }
+}
