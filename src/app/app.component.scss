@@ -22,6 +22,14 @@ $uploadFileButtonBg: rgb(105 240 174 / 11%);
   .mat-radio-outer-circle {
     border-color: #686868;
   }
+  .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle{
+    border-color: #59df7c;
+  }
+
+  .mat-radio-button.mat-accent .mat-radio-inner-circle{
+    background-color: #59df7c;
+  }
+
 }
 
 .alphabet__from_file {

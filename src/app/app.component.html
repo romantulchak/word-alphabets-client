@@ -17,9 +17,31 @@
       </button>
       <span>{{this.file?.name}}</span>
     </div>
-    <div class="">
-
+    <div class="alphabet__from_form" *ngIf="option === 'form'">
+      <pre>{{alphabetGroup.value | json}}</pre>
+      <div [formGroup]="alphabetGroup">
+        <div>
+          <h3>Choose language</h3>
+          <mat-form-field appearance="standard">
+            <mat-label>Languages</mat-label>
+            <mat-select formControlName="languageCode">
+              <mat-option *ngFor="let language of languages" [value]="language.code">
+                {{language.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div>
+          <input type="number" maxlength="50" #lettersLocal (input)="initLetters(lettersLocal.value)">
+        </div>
+        <div formArrayName="letters">
+          <div *ngFor="let letter of letters.controls; let i = index">
+            <input type="text" [formControlName]="i">
+          </div>
+        </div>
+      </div>
     </div>
+    <!-- <button mat-stroked-button color="primary">Primary</button> -->
     <button (click)="createFromFile()">Create</button>
   </div>
 </section>

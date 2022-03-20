@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { LanguageDTO } from './dto/language.dto';
 import { AlphabetService } from './service/alphabet.service';
 import { LanguageService } from './service/language.service';
@@ -16,8 +16,8 @@ export class AppComponent implements OnInit{
   public option: 'form' | 'file' = 'file';
   public isFileSelected: boolean = false;
   public alphabetGroup: FormGroup;
+  public languages: LanguageDTO[];
   private file: File | undefined;
-  private languages: LanguageDTO[];
 
   constructor(private alphabetService: AlphabetService,
               private languageService: LanguageService,
@@ -44,11 +44,22 @@ export class AppComponent implements OnInit{
   }
 
   public initForm(): void{
-    if(this.option !== 'form'){
+    if(!this.alphabetGroup){
+      this.findAllLanguages();
       this.alphabetGroup = this.formBuilder.group({
-
+        languageCode: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(3)]],
+        letters: this.formBuilder.array([''])
       });
     }
+  }
+
+  public initLetters(numberOfLetters: string): void{
+    const letters: string[] = [];
+    const iterateOver = +numberOfLetters - 1;
+    for (let i = 0; i < iterateOver; i++) {
+      letters.push('');
+    }
+    this.setLetters = letters;  
   }
 
   private findAllLanguages(): void{
@@ -57,5 +68,17 @@ export class AppComponent implements OnInit{
         this.languages = res;
       }
     );
+  }
+
+  get letters(){
+    return this.alphabetGroup.get('letters') as FormArray;
+  }
+
+  set setLetters(values: string[]){
+    this.alphabetGroup.setControl('letters', this.formBuilder.array(['']));
+    values.forEach(value => {
+      this.letters.push(this.formBuilder.control(value));
+    });
+    this.letters.reset();
   }
 }
