@@ -18,15 +18,21 @@ $uploadFileButtonBg: rgb(105 240 174 / 11%);
   }
 }
 
+%languageNumberBlock{
+  display: grid;
+  height: 100px;
+}
+
 ::ng-deep {
   .mat-radio-outer-circle {
     border-color: #686868;
   }
-  .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle{
+
+  .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle {
     border-color: #59df7c;
   }
 
-  .mat-radio-button.mat-accent .mat-radio-inner-circle{
+  .mat-radio-button.mat-accent .mat-radio-inner-circle {
     background-color: #59df7c;
   }
 
@@ -35,26 +41,30 @@ $uploadFileButtonBg: rgb(105 240 174 / 11%);
 .alphabet__from_file {
   display: flex;
   justify-content: center;
-  margin-top: 5em;
+  margin-top: 3em;
   width: 100%;
 
-  .hide__file_input {
-    display: none;
-  }
+  form {
+    width: 100%;
 
-  .upload__btn {
-    border: 1px dashed rgba(0, 0, 0, 0.5);
-    @extend %uploadButtonStyle;
+    .hide__file_input {
+      display: none;
+    }
 
-    &:hover {
+    .upload__btn {
+      border: 1px dashed rgba(0, 0, 0, 0.5);
+      @extend %uploadButtonStyle;
+
+      &:hover {
+        background: $uploadFileButtonBg;
+      }
+    }
+
+    .file__selected {
+      @extend %uploadButtonStyle;
+      border: 1px solid rgb(105 240 174 / 25%);
       background: $uploadFileButtonBg;
     }
-  }
-
-  .file__selected{
-    @extend %uploadButtonStyle;
-    border: 1px solid rgb(105 240 174 / 25%);
-    background: $uploadFileButtonBg;
   }
 }
 
@@ -71,5 +81,75 @@ $uploadFileButtonBg: rgb(105 240 174 / 11%);
       letter-spacing: 1px;
       margin: 0 1em;
     }
+  }
+}
+
+.alphabet__from_form {
+
+  .alphabet__form {
+    text-align: center;
+
+    .alphabet__language_number {
+      display: flex;
+      align-items: center;
+      justify-content: space-evenly;
+
+      div{
+        @extend %languageNumberBlock;
+      }
+    }
+    
+    .letters{
+      display: flex;
+      flex-wrap: wrap;
+      margin-top: 3em;
+      justify-content: center;
+
+      .letter__block{
+        width: 105px;
+        height: 75px;
+        margin-bottom: 3em;
+
+        input{
+          width: 100%;
+          outline: none;
+          height: 100%;
+          text-align: center;
+          font-size: 25px;
+          font-weight: 600;
+          text-transform: uppercase;
+        }
+      }
+    }
+  }
+}
+
+.title {
+  margin-top: 3em;
+  text-align: center;
+}
+
+.error{
+  color: red;
+  font-weight: 600;
+  font-size: 9px;
+  text-align: center;
+  letter-spacing: 1px;
+}
+
+.letters__number{
+  outline: none;
+  border: 1px solid rgba(0,0,0,.12);
+  border-radius: 4px;
+  height: 55px;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 600;
+  transition: .2s ease-in-out;
+  box-sizing: border-box;
+  cursor: pointer;
+
+  &:hover{
+    border: 2px solid #000;
   }
 }

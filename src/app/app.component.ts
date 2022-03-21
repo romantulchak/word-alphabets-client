@@ -35,10 +35,9 @@ export class AppComponent implements OnInit{
   }
 
   public createFromFile(): void{
-      this.alphabetService.createLanguageFromFile('ua', this.file!).subscribe(
+      this.alphabetService.createAlphabetFromFile('ua', this.file!).subscribe(
         res=>{
           console.log("Ok");
-          
         }
       )
   }
@@ -48,7 +47,7 @@ export class AppComponent implements OnInit{
       this.findAllLanguages();
       this.alphabetGroup = this.formBuilder.group({
         languageCode: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(3)]],
-        letters: this.formBuilder.array([''])
+        letters: this.formBuilder.array([this.formBuilder.control('', [Validators.required, Validators.minLength(1), Validators.maxLength(1)])])
       });
     }
   }
@@ -60,6 +59,16 @@ export class AppComponent implements OnInit{
       letters.push('');
     }
     this.setLetters = letters;  
+  }
+
+  public createFromForm(){
+    console.log(this.alphabetGroup);
+    const alphabetRequest = [this.alphabetGroup.value];
+    this.alphabetService.createAlphabetFromForm(alphabetRequest).subscribe(
+      res=>{
+        console.log("Ok");
+      }
+    );
   }
 
   private findAllLanguages(): void{
@@ -77,8 +86,7 @@ export class AppComponent implements OnInit{
   set setLetters(values: string[]){
     this.alphabetGroup.setControl('letters', this.formBuilder.array(['']));
     values.forEach(value => {
-      this.letters.push(this.formBuilder.control(value));
+      this.letters.push(this.formBuilder.control(value, [Validators.required, Validators.minLength(1), Validators.maxLength(1)]));
     });
-    this.letters.reset();
   }
 }

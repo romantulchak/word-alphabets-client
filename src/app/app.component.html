@@ -9,39 +9,63 @@
         </mat-radio-group>
       </div>
     </div>
-    <div class="alphabet__from_file" *ngIf="option === 'file'">
-      <input class="hide__file_input" #file type="file" accept="txt/*" (change)="selectFile(file.files)">
-      <button [class.file__selected]="isFileSelected" [class.upload__btn]="!isFileSelected" #upload (click)="file.click()">
-        <mat-icon>attachment</mat-icon>
-        {{this.fileName}}
-      </button>
-      <span>{{this.file?.name}}</span>
-    </div>
-    <div class="alphabet__from_form" *ngIf="option === 'form'">
-      <pre>{{alphabetGroup.value | json}}</pre>
-      <div [formGroup]="alphabetGroup">
-        <div>
-          <h3>Choose language</h3>
-          <mat-form-field appearance="standard">
-            <mat-label>Languages</mat-label>
-            <mat-select formControlName="languageCode">
-              <mat-option *ngFor="let language of languages" [value]="language.code">
-                {{language.name}}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-        <div>
-          <input type="number" maxlength="50" #lettersLocal (input)="initLetters(lettersLocal.value)">
-        </div>
-        <div formArrayName="letters">
-          <div *ngFor="let letter of letters.controls; let i = index">
-            <input type="text" [formControlName]="i">
-          </div>
-        </div>
+    <div *ngIf="option === 'file'">
+      <h2 class="title">Create from file</h2>
+      <div class="alphabet__from_file">
+        <form (ngSubmit)="createFromFile()">
+          <input class="hide__file_input" #file type="file" accept="txt/*" (change)="selectFile(file.files)">
+          <button [class.file__selected]="isFileSelected" [class.upload__btn]="!isFileSelected" #upload
+            (click)="file.click()">
+            <mat-icon>attachment</mat-icon>
+            {{this.fileName}}
+          </button>
+          <span>{{this.file?.name}}</span>
+          <button type="submit" color="primary" mat-stroked-button>Create</button>
+        </form>
       </div>
     </div>
-    <!-- <button mat-stroked-button color="primary">Primary</button> -->
-    <button (click)="createFromFile()">Create</button>
+    <div class="alphabet__from_form" *ngIf="option === 'form'">
+      <h2 class="title">Create from form</h2>
+      <form class="alphabet__form" [formGroup]="alphabetGroup" #form="ngForm" (ngSubmit)="form.valid && createFromForm()">
+        <div class="alphabet__language_number">
+          <div class="language">
+            <h3>Choose language</h3>
+            <mat-form-field appearance="outline">
+              <mat-label>Languages</mat-label>
+              <mat-select formControlName="languageCode">
+                <mat-option *ngFor="let language of languages" [value]="language.code">
+                  {{language.name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <ng-container *ngIf="alphabetGroup.get('languageCode') as languageCode">
+              <div class="error" *ngIf="languageCode?.invalid && (languageCode?.dirty || languageCode?.touched)">
+                <div *ngIf="languageCode.errors?.['required']">
+                  Language is required.
+                </div>
+              </div>
+            </ng-container>
+          </div>
+          <div>
+            <h3>Number of letters</h3>
+            <input type="number" class="letters__number" maxlength="50" value="1" #lettersLocal (input)="initLetters(lettersLocal.value)">
+          </div>
+        </div>
+        <div formArrayName="letters" class="letters">
+          <div class="letter__block" *ngFor="let letter of letters.controls; let i = index">
+            <input type="text" [maxlength]="1" [formControlName]="i">
+            <div class="error" *ngIf="letter.invalid && (letter.dirty || letter.touched)">
+              <div *ngIf="letter.errors?.['required']">
+                Letter is required.
+              </div>
+              <div *ngIf="letter.errors?.['maxlength']">
+                Letter max length is 1
+              </div>
+            </div>
+          </div>
+        </div>
+        <button type="submit" color="primary" mat-stroked-button>Create</button>
+      </form>
+    </div>
   </div>
 </section>
