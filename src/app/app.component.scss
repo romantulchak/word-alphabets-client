@@ -18,7 +18,7 @@ $uploadFileButtonBg: rgb(105 240 174 / 11%);
   }
 }
 
-%languageNumberBlock{
+%languageNumberBlock {
   display: grid;
   height: 100px;
 }
@@ -94,23 +94,23 @@ $uploadFileButtonBg: rgb(105 240 174 / 11%);
       align-items: center;
       justify-content: space-evenly;
 
-      div{
+      div {
         @extend %languageNumberBlock;
       }
     }
-    
-    .letters{
+
+    .letters {
       display: flex;
       flex-wrap: wrap;
       margin-top: 3em;
       justify-content: center;
 
-      .letter__block{
+      .letter__block {
         width: 105px;
         height: 75px;
         margin-bottom: 3em;
 
-        input{
+        input {
           width: 100%;
           outline: none;
           height: 100%;
@@ -129,7 +129,7 @@ $uploadFileButtonBg: rgb(105 240 174 / 11%);
   text-align: center;
 }
 
-.error{
+.error {
   color: red;
   font-weight: 600;
   font-size: 9px;
@@ -137,9 +137,9 @@ $uploadFileButtonBg: rgb(105 240 174 / 11%);
   letter-spacing: 1px;
 }
 
-.letters__number{
+.letters__number {
   outline: none;
-  border: 1px solid rgba(0,0,0,.12);
+  border: 1px solid rgba(0, 0, 0, .12);
   border-radius: 4px;
   height: 55px;
   text-align: center;
@@ -149,7 +149,40 @@ $uploadFileButtonBg: rgb(105 240 174 / 11%);
   box-sizing: border-box;
   cursor: pointer;
 
-  &:hover{
+  &:hover {
     border: 2px solid #000;
+  }
+}
+
+.add__alphabet {
+  display: flex;
+  justify-content: center;
+
+  button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: 1px solid rgb(0 0 0 / 20%);
+    padding: 5px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: .3s ease-in-out;
+    font-weight: 600;
+
+    &:hover {
+      background: rgb(0 0 0 / 10%);
+      color: #673ab7;
+
+      mat-icon {
+        color: #673ab7;
+      }
+    }
+
+    mat-icon {
+      transition: .3s ease-in-out;
+      color: #59df7c;
+      margin-right: 5px;
+    }
   }
 }

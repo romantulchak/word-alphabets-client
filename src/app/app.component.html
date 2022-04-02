@@ -14,7 +14,7 @@
       <div class="alphabet__from_file">
         <form (ngSubmit)="createFromFile()">
           <input class="hide__file_input" #file type="file" accept="txt/*" (change)="selectFile(file.files)">
-          <button [class.file__selected]="isFileSelected" [class.upload__btn]="!isFileSelected" #upload
+          <button type="button" [class.file__selected]="isFileSelected" [class.upload__btn]="!isFileSelected" #upload
             (click)="file.click()">
             <mat-icon>attachment</mat-icon>
             {{this.fileName}}
@@ -26,44 +26,51 @@
     </div>
     <div class="alphabet__from_form" *ngIf="option === 'form'">
       <h2 class="title">Create from form</h2>
+      <div class="add__alphabet">
+        <button (click)="addAlphabet()"><mat-icon>add_box</mat-icon>Add alphabet</button>
+      </div>
       <form class="alphabet__form" [formGroup]="alphabetGroup" #form="ngForm" (ngSubmit)="form.valid && createFromForm()">
-        <div class="alphabet__language_number">
-          <div class="language">
-            <h3>Choose language</h3>
-            <mat-form-field appearance="outline">
-              <mat-label>Languages</mat-label>
-              <mat-select formControlName="languageCode">
-                <mat-option *ngFor="let language of languages" [value]="language.code">
-                  {{language.name}}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-            <ng-container *ngIf="alphabetGroup.get('languageCode') as languageCode">
-              <div class="error" *ngIf="languageCode?.invalid && (languageCode?.dirty || languageCode?.touched)">
-                <div *ngIf="languageCode.errors?.['required']">
-                  Language is required.
-                </div>
+        <ng-container formArrayName="alphabets">
+          <ng-container *ngFor="let alpahbet of alphabets.controls; let i = index" [formGroupName]="i">
+            <div class="alphabet__language_number">
+              <div class="language">
+                <h3>Choose language</h3>
+                <mat-form-field appearance="outline">
+                  <mat-label>Languages</mat-label>
+                  <mat-select formControlName="languageCode">
+                    <mat-option *ngFor="let language of languages" [value]="language.code">
+                      {{language.name}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <ng-container *ngIf="alphabetGroup.get('alphabets.' + i+ '.languageCode') as languageCode">
+                  <div class="error" *ngIf="languageCode?.invalid && (languageCode?.dirty || languageCode?.touched)">
+                    <div *ngIf="languageCode.errors?.['required']">
+                      Language is required.
+                    </div>
+                  </div>
+                </ng-container>
               </div>
-            </ng-container>
-          </div>
-          <div>
-            <h3>Number of letters</h3>
-            <input type="number" class="letters__number" maxlength="50" value="1" #lettersLocal (input)="initLetters(lettersLocal.value)">
-          </div>
-        </div>
-        <div formArrayName="letters" class="letters">
-          <div class="letter__block" *ngFor="let letter of letters.controls; let i = index">
-            <input type="text" [maxlength]="1" [formControlName]="i">
-            <div class="error" *ngIf="letter.invalid && (letter.dirty || letter.touched)">
-              <div *ngIf="letter.errors?.['required']">
-                Letter is required.
-              </div>
-              <div *ngIf="letter.errors?.['maxlength']">
-                Letter max length is 1
+              <div>
+                <h3>Number of letters</h3>
+                <input type="number" class="letters__number" maxlength="50" [value]="getLetters(i).length" #lettersLocal (input)="initLetters(i, lettersLocal.value)">
               </div>
             </div>
-          </div>
-        </div>
+            <div formArrayName="letters" class="letters">
+              <div class="letter__block" *ngFor="let letter of getLetters(i).controls; let j = index">
+                <input type="text" [maxlength]="1" [formControlName]="j">
+                <div class="error" *ngIf="letter.invalid && (letter.dirty || letter.touched)">
+                  <div *ngIf="letter.errors?.['required']">
+                    Letter is required.
+                  </div>
+                  <div *ngIf="letter.errors?.['maxlength']">
+                    Letter max length is 1
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+        </ng-container>
         <button type="submit" color="primary" mat-stroked-button>Create</button>
       </form>
     </div>
